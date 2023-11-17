@@ -1,0 +1,138 @@
+CREATE TABLE comuna
+(id_comuna INT(3) NOT NULL,
+ nombre_comuna VARCHAR(30) NOT NULL,
+ PRIMARY KEY (id_comuna));
+
+CREATE TABLE categoria_empleado
+(id_categoria_emp INT(1) NOT NULL,
+ desc_categoria_emp VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_categoria_emp));
+
+CREATE TABLE tipo_propiedad
+(id_tipo_propiedad VARCHAR(1) NOT NULL,
+ desc_tipo_propiedad VARCHAR(30) NOT NULL,
+PRIMARY KEY (id_tipo_propiedad ));
+
+CREATE TABLE estado_civil
+(id_estcivil   INT(1) NOT NULL,
+ desc_Estcivil    VARCHAR(25) Not Null,
+PRIMARY KEY(id_estcivil));
+
+CREATE TABLE propietario
+(numrut_prop  INT(10) Not Null,
+ dvrut_prop  VARCHAR(1) NOT NULL,
+ appaterno_prop VARCHAR(15) NOT NULL,
+ apmaterno_prop VARCHAR(15) NOT NULL,
+ nombre_prop VARCHAR(25) NOT NULL,
+ direccion_prop VARCHAR(60) NOT NULL,
+ id_estcivil   INT(1) NOT NULL,
+ fonofijo_prop VARCHAR(15) NOT NULL,
+ celular_prop VARCHAR(15),
+ id_Comuna INT(3),
+PRIMARY KEY (numrut_prop));
+
+CREATE TABLE cliente
+(numrut_cli INT(10) NOT NULL,
+ dvrut_cli  VARCHAR(1) NOT NULL,
+ appaterno_cli VARCHAR(15) NOT NULL,
+ apmaterno_cli VARCHAR(15) NOT NULL,
+ nombre_cli VARCHAR(25) NOT NULL,
+ direccion_cli VARCHAR(60) NOT NULL,
+ id_estcivil   INT(1) NOT NULL, 
+ fonofijo_cli INT(15) NOT NULL,
+ celular_cli INT(15),
+ renta_cli INT(7) NOT NULL,
+PRIMARY KEY (numrut_cli));
+
+CREATE TABLE empleado
+(numrut_emp INT(10) NOT NULL,
+ dvrut_emp  VARCHAR(1) NOT NULL,
+ appaterno_emp VARCHAR(15) NOT NULL,
+ apmaterno_emp VARCHAR(15) NOT NULL,
+ nombre_emp VARCHAR(25) NOT NULL,
+ direccion_emp VARCHAR(60) NOT NULL,
+ id_estcivil INT(1) NOT NULL,
+ fonofijo_emp VARCHAR(15) NOT NULL,
+ celular_emp VARCHAR(15),
+ fecnac_emp DATE,
+ fecing_emp DATE NOT NULL,
+ sueldo_emp INT(7) NOT NULL,
+ id_comuna INT(3),
+ id_categoria_emp INT(1),
+ numrut_supervisor INT(10),
+PRIMARY KEY (numrut_emp));
+
+CREATE TABLE propiedad
+(nro_propiedad INT(6) NOT NULL,
+ direccion_propiedad VARCHAR(60) NOT NULL,
+ superficie decimal(8,2) NOT NULL,
+ nro_dormitorios INT(1),
+ nro_banos INT(1),
+ valor_arriendo INT(7) NOT NULL,
+ valor_gasto_comun INT(6),
+ id_tipo_propiedad VARCHAR(1) NOT NULL,
+ id_comuna INT(3) NOT NULL,
+ numrut_prop INT(10) NOT NULL,
+ numrut_emp INT(10),
+PRIMARY KEY (nro_propiedad));
+
+CREATE TABLE propiedad_arrendada
+(nro_propiedad INT(6) NOT NULL,
+ fecini_arriendo DATE NOT NULL,
+ fecter_arriendo DATE, 
+ numrut_cli INT(10) NOT NULL,
+PRIMARY KEY (nro_propiedad,fecini_arriendo));
+
+-- creacion de llaves foraneas 
+ALTER TABLE empleado
+   ADD FOREIGN KEY (id_comuna)
+   REFERENCES comuna (id_comuna);
+
+ALTER TABLE propietario
+   ADD FOREIGN KEY (id_comuna)
+   REFERENCES comuna (id_comuna);
+
+ALTER TABLE empleado
+   ADD FOREIGN KEY (id_categoria_emp)
+   REFERENCES categoria_empleado (id_categoria_emp);
+
+ALTER TABLE empleado
+   Add FOREIGN KEY (numrut_supervisor)
+   REFERENCES empleado (numrut_emp);
+   
+ALTER TABLE propiedad
+   ADD FOREIGN KEY (id_tipo_propiedad)
+   REFERENCES tipo_propiedad (id_tipo_propiedad);
+
+ALTER TABLE propiedad
+   ADD FOREIGN KEY (id_comuna)
+   REFERENCES comuna (id_comuna);
+
+ALTER TABLE propiedad
+   ADD FOREIGN KEY (numrut_prop)
+   REFERENCES propietario (numrut_prop);
+
+ALTER TABLE propiedad
+   ADD FOREIGN KEY (numrut_emp)
+   REFERENCES empleado (numrut_emp);
+    
+ALTER TABLE propiedad_arrendada
+   ADD FOREIGN KEY (numrut_cli)
+   REFERENCES cliente(numrut_cli);
+
+ALTER TABLE propiedad_arrendada
+   ADD FOREIGN KEY (nro_propiedad)
+   REFERENCES propiedad(nro_propiedad);
+
+ALTER TABLE propietario
+   ADD FOREIGN KEY (id_estcivil)
+   REFERENCES estado_civil (id_estcivil);
+
+ALTER TABLE cliente
+   ADD FOREIGN KEY (id_estcivil)
+   REFERENCES estado_civil (id_estcivil);
+
+ALTER TABLE empleado
+   ADD FOREIGN KEY (id_estcivil)
+   REFERENCES estado_civil (id_estcivil);
+   
