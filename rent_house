@@ -430,5 +430,66 @@ INSERT INTO `propiedad_arrendada` (`nro_propiedad`, `fecini_arriendo`, `numrut_c
 INSERT INTO `propiedad_arrendada` (`nro_propiedad`, `fecini_arriendo`, `fecter_arriendo`, `numrut_cli`) VALUES ('1026', '2010-09-01', '2017-08-31', '13035746');
 INSERT INTO `propiedad_arrendada` (`nro_propiedad`, `fecini_arriendo`, `fecter_arriendo`, `numrut_cli`) VALUES ('1026', '2017-10-01', '2022-12-31', '11635470');
 
+/* Consultas de datos*/
 
+SELECT * FROM empleado;
+SELECT * FROM ESTADO_CIVIL;
+
+
+SELECT CONCAT(NUMRUT_EMP,'-',DVRUT_EMP) AS "RUT_EMPLEADO",
+CONCAT(NOMBRE_EMP,' ',APPATERNO_EMP,' ',APMATERNO_EMP) AS "NOMBRE_COMPLETO", 
+ID_ESTCIVIL 
+FROM EMPLEADO
+-- WHERE ID_ESTCIVIL=2
+ORDER BY NUMRUT_EMP DESC;
+
+-- Unir nombre y apellidos
+
+SELECT numrut_cli,renta_cli+55 FROM CLIENTE;
+
+SELECT numrut_cli,renta_cli,renta_cli*1.25 as "Aumentado en 25%" 
+FROM CLIENTE
+WHERE renta_cli<1000000
+;
+
+SELECT numrut_cli,renta_cli,renta_cli*1.25 as "Aumentado en 25%" 
+FROM CLIENTE
+WHERE renta_cli>500000 AND renta_cli<10000000;
+
+SELECT numrut_cli,renta_cli,renta_cli*1.25 as "Aumentado en 25%" 
+FROM CLIENTE
+WHERE renta_cli BETWEEN 500000 AND 10000000;
+
+
+SELECT * FROM propiedad_arrendada;
+
+SELECT * FROM EMPLEADO
+WHERE nombre_emp='LUIS'
+;
+SELECT * FROM EMPLEADO
+WHERE nombre_emp LIKE 'M%';
+
+SELECT * FROM EMPLEADO
+WHERE nombre_emp LIKE '%O';
+
+SELECT * FROM EMPLEADO
+WHERE nombre_emp LIKE '%AR%';
+
+
+SELECT * FROM EMPLEADO
+WHERE nombre_emp LIKE 'M%' OR nombre_emp LIKE '%O';
+
+
+-- DATOS DE DOS TABLAS
+SELECT CONCAT(NUMRUT_EMP,'-',DVRUT_EMP) AS "RUT_EMPLEADO",
+CONCAT(NOMBRE_EMP,' ',APPATERNO_EMP,' ',APMATERNO_EMP) AS "NOMBRE_COMPLETO", 
+ESTADO_CIVIL.desc_Estcivil
+FROM EMPLEADO
+INNER JOIN ESTADO_CIVIL ON EMPLEADO.ID_ESTCIVIL=ESTADO_CIVIL.id_estcivil
+ORDER BY NUMRUT_EMP DESC;
+
+-- TABLA EMPLEADO Y CATEGORIA EMPLEADO
+SELECT numrut_emp,desc_categoria_emp
+FROM EMPLEADO
+INNER JOIN categoria_empleado ON EMPLEADO.id_categoria_emp=categoria_empleado.id_categoria_emp
    
